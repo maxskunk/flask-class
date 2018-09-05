@@ -27,8 +27,13 @@ class Student:
         self.marks =[]
     def average(self):
         return sum(self.marks) / len(self.marks)
+    @classmethod
+    def go_to_school(cls):
+        print("I'm Going to School")
+        print("I'm a {}".format(cls))
 
 anna = Student("Anna","MIT")
 anna.marks.append(56)
 anna.marks.append(71)
-print(anna.average())
+#print(anna.average())
+anna.go_to_school()
