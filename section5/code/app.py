@@ -19,3 +19,6 @@ api.add_resource(ItemList, '/items')
 api.add_resource(UserRegister, '/register')
 
 app.run(port=5000, debug=True)
+
+if __name__ == '__main__':  # This prevents issues if this library is imported, makes sure this only runs from the main app
+    app.run(port=5000, debug=True)
