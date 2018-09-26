@@ -7,6 +7,7 @@ from resources.user import UserRegister
 from resources.item import Item, ItemList
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'maxskunk'
 api = Api(app)
 
@@ -21,4 +22,6 @@ api.add_resource(UserRegister, '/register')
 app.run(port=5000, debug=True)
 
 if __name__ == '__main__':  # This prevents issues if this library is imported, makes sure this only runs from the main app
+    from db import db
+    db.init_app(app)
     app.run(port=5000, debug=True)
