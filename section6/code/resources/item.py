@@ -9,8 +9,7 @@ class Item(Resource):
     parser.add_argument('price',
                         type=float,
                         required=True,
-                        help="This Field cannot be left blank!"
-                        )
+                        help="This Field cannot be left blank!")
 
     @jwt_required()
     def get(self, name):
@@ -28,7 +27,7 @@ class Item(Resource):
         item = ItemModel(name, data['price'])
 
         try:
-            item.insert()
+            item.save_to_db()
         except:
             # Internal Server Error
             return {"message": "An error occured inserting the item."}, 500
@@ -36,33 +35,23 @@ class Item(Resource):
         return item.json(), 201
 
     def delete(self, name):
+        item = Item.find_by_name(name)
+        if item:
+            item.delete_from_db()
 
-        connection = sqlite3.connect('data.db')
-        cursor = connection.cursor()
-
-        query = "DELETE FROM items WHERE name=?"
-        cursor.execute(query, (name,))
-
-        connection.commit()
-        connection.close()
-        return {'message': 'Item deleted'}
+        return {'message': 'Item Deleted'}
 
     def put(self, name):
         data = Item.parser.parse_args()
 
         item = ItemModel.find_by_name(name)
-        updated_item = ItemModel(name, data['price'])
+
         if item is None:
-            try:
-                updated_item.insert()
-            except:
-                return {"message": "An error ocured inserting the item."}, 500
+            item = ItemModel(name, data['price'])
         else:
-            try:
-                updated_item.update()
-            except:
-                return {"message": "An error ocured updating the item."}, 500
-        return updated_item.json()
+            item.price = data['price']
+        item.save_to_db()
+        return item.json()
 
 
 class ItemList(Resource):
