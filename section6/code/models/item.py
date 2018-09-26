@@ -8,8 +8,7 @@ class ItemModel(db.Model):
     name = db.Column(db.String(80))
     price = db.Column(db.Float(precision=2))
 
-    def __init__(self, _id, name, price):
-        self.id = _id
+    def __init__(self, name, price):
         self.name = name
         self.price = price
 
@@ -18,7 +17,7 @@ class ItemModel(db.Model):
         # Select * FROM items WHERE name = name
         return cls.query.filter_by(name=name).first()
 
-    def insave_to_db(self):  # upserting
+    def save_to_db(self):  # upserting
         db.session.add(self)
         db.session.commit()  # Updates and Inserts
 

@@ -42,8 +42,9 @@ class Item(Resource):
         return {'message': 'Item Deleted'}
 
     def put(self, name):
-        data = Item.parser.parse_args()
 
+        data = Item.parser.parse_args()
+        print("DOING PUT: {}".format(data))
         item = ItemModel.find_by_name(name)
 
         if item is None:
